@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hifz – plan de mémorisation</title>
+<style>
+:root{--bg:#f3efe4;--card:#fffdf6;--ink:#17332a;--mute:#5d7268;--line:#d9d2bd;--acc:#1f6b4f;--gold:#b7862b;--nav:#17332a;--navink:#cfe0d5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1f19;--card:#153027;--ink:#e8f0e6;--mute:#93ad9f;--line:#284a3d;--acc:#5fc79a;--gold:#e0b458;--nav:#0a1612;--navink:#93ad9f}}
+:root[data-theme="dark"]{--bg:#0e1f19;--card:#153027;--ink:#e8f0e6;--mute:#93ad9f;--line:#284a3d;--acc:#5fc79a;--gold:#e0b458;--nav:#0a1612;--navink:#93ad9f}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 Georgia,"Times New Roman",serif}
+.app{max-width:480px;margin:0 auto;height:100%;display:flex;flex-direction:column}
+main{flex:1;overflow-y:auto;padding:16px 16px 24px}
+h1{font-size:1.25rem;text-align:center;margin:4px 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+.clock{display:flex;align-items:center;gap:16px}
+.clock svg{width:96px;height:96px;flex:none}
+.clock .t{font-size:1.9rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.clock .d{color:var(--mute);font-size:.95rem;direction:rtl}
+.clock small{color:var(--mute)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:1.5rem;color:var(--gold)}
+.stat span{font-size:.85rem;color:var(--mute)}
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:999px;padding:9px 12px;font-weight:bold}
+.btn:focus-visible,.step:focus-visible,nav button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.plan h2{font-size:1.05rem;margin:0 0 4px}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:8px 0 12px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .3s}
+.step{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:transparent;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.step .n{width:28px;height:28px;border-radius:50%;border:2px solid var(--acc);display:grid;place-items:center;font-size:.85rem;flex:none}
+.step.done{background:color-mix(in srgb,var(--acc) 12%,transparent)}
+.step.done .n{background:var(--acc);color:var(--card)}
+.step p{margin:0;flex:1}.step small{color:var(--mute);display:block}
+.count{color:var(--gold);font-weight:bold}
+.reset{float:right;background:none;border:0;color:var(--mute);font-size:.85rem;text-decoration:underline}
+.ph{color:var(--mute);text-align:center;margin-top:40px}
+nav{display:flex;background:var(--nav);padding:6px 4px}
+nav button{flex:1;background:none;border:0;color:var(--navink);padding:8px 2px;font-size:.75rem;border-radius:10px}
+nav button[aria-current="page"]{background:color-mix(in srgb,var(--gold) 22%,transparent);color:#fff}
+nav svg{display:block;margin:0 auto 2px;width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.big{width:200px;height:200px;border-radius:50%;border:3px solid var(--acc);background:var(--card);font:bold 3.5rem Georgia,serif;color:var(--acc)}
+.ctr{display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:24px}
+.rd{width:64px;height:64px;border-radius:50%;font-size:1.8rem;margin:0 8px;padding:0}
+label{display:block;margin-bottom:12px;font-size:.9rem;color:var(--mute)}
+input,select{display:block;width:100%;margin-top:4px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.tabs{display:flex;gap:6px;margin-bottom:14px}.tabs button{flex:1;padding:9px;border:1px solid var(--line);border-radius:10px;background:transparent}
+.tabs button[aria-pressed="true"]{background:var(--acc);color:var(--card);border-color:var(--acc)}
+.sh{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center}
+.pn{background:var(--card);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));display:grid;gap:10px}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:var(--card)}summary{cursor:pointer;font-weight:bold}
+.msg{color:var(--gold);min-height:1.4em}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}#toast.on{opacity:1}
+.hd{display:flex;align-items:center;gap:8px;margin-bottom:14px}.hd h1{flex:1;margin:0;font-size:1.05rem;text-align:left}.ic{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;font-size:1.2rem}
+.au{max-width:380px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:8px 0}.lg{font-size:2.6rem;margin:0}.pr{background:var(--acc);color:var(--card)}.lk{background:none;border:0;color:var(--acc);text-decoration:underline;padding:6px}.ph2{display:grid;grid-template-columns:110px 1fr;gap:8px}
+.bye{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:var(--bg);text-align:center;animation:byein .5s ease both;transition:opacity .5s}.bye.out{opacity:0}.bye p{margin:0;font:bold clamp(2.2rem,10vw,3.4rem)/1.25 Georgia,serif;color:var(--acc);animation:byeup 1.1s ease both}@keyframes byein{from{opacity:0}}@keyframes byeup{from{opacity:0;transform:translateY(14px) scale(.85)}}@media (prefers-reduced-motion:reduce){.bye,.bye p{animation:none}}
+.bx{display:flex;flex-direction:column;align-items:center;gap:10px}.arm{transform-origin:180px 196px;animation:wave .65s ease-in-out infinite alternate}.hand{transform-origin:208px 132px;animation:wag .3s ease-in-out infinite alternate}.gb .arm{animation-duration:1.1s}.gb .hand{animation-duration:.55s}@keyframes wave{from{transform:rotate(-12deg)}to{transform:rotate(14deg)}}@keyframes wag{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}.eye{transform-box:fill-box;transform-origin:center;animation:blink 3.4s infinite}@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}.man{animation:bob 1.1s ease-in-out infinite alternate}@keyframes bob{to{transform:translateY(-6px)}}@media (prefers-reduced-motion:reduce){.arm,.hand,.man,.eye{animation:none}}
+#tz{width:auto;max-width:100%;margin:0 0 4px;padding:4px 6px;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="app">
+<main id="view"></main>
+<nav id="nav"></nav>
+</div>
+<script>
+const TABS=[
+["val","Valeur","M4 7h9l3-3m0 0l3 3m-3-3v9M20 17h-9l-3 3m0 0l-3-3m3 3V8"],
+["cnt","Compteur","M12 3v2M5 17a7 7 0 0114 0zM3 20h18"],
+["home","Accueil","M4 11l8-7 8 7v9H4z"],
+["file","Fichier","M6 3h9l4 4v14H6zM14 3v5h5"],
+["more","Plus","M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"]];
+const STEPS=[
+{t:"Choisir la section du jour",s:"",n:1},
+{t:"Écouter le récitant",s:"3 fois",n:3},
+{t:"Lire le tafsir",s:"1 fois",n:1},
+{t:"Première tentative de mémorisation",s:"À votre rythme",n:1},
+{t:"Enregistrer sa récitation",s:"3 fois",n:3},
+{t:"Répéter la page par cœur",s:"40 fois",n:40}];
+const KEY="hifz-plan2-"+new Date().toISOString().slice(0,10);
+let prog=[0,0,0,0,0,0],tab="home",stats={neglected:0,excluded:6};
+try{const s=localStorage.getItem(KEY);if(s)prog=JSON.parse(s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(prog))}catch(e){}};
+const $=id=>document.getElementById(id);
+function nav(){$("nav").innerHTML=TABS.map(([k,l,d])=>`<button data-k="${k}" ${k===tab?'aria-current="page"':''}><svg viewBox="0 0 24 24"><path d="${d}"/></svg>${l}</button>`).join("");
+$("nav").onclick=e=>{const b=e.target.closest("button");if(b){if(b.dataset.k==="more"){sheet();return}tab=b.dataset.k;render()}}}
+function clockSvg(){let m="";for(let i=0;i<12;i++){const a=i*30*Math.PI/180;m+=`<line x1="${50+40*Math.sin(a)}" y1="${50-40*Math.cos(a)}" x2="${50+45*Math.sin(a)}" y2="${50-45*Math.cos(a)}" stroke="var(--mute)" stroke-width="2"/>`}
+return `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="none" stroke="var(--acc)" stroke-width="3"/>${m}<line id="h" x1="50" y1="50" x2="50" y2="28" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><line id="mi" x1="50" y1="50" x2="50" y2="18" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/><line id="s" x1="50" y1="56" x2="50" y2="14" stroke="var(--gold)" stroke-width="1.2"/><circle cx="50" cy="50" r="3" fill="var(--gold)"/></svg>`}
+function tick(){const t=$("time");if(!t)return;const n=new Date();
+const p=new Intl.DateTimeFormat("fr-FR",{timeZone:tzo(),hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}).formatToParts(n).reduce((o,x)=>(o[x.type]=x.value,o),{});
+const h=+p.hour%24,m=+p.minute,s=+p.second;t.textContent=`${p.hour}:${p.minute}:${p.second}`;
+$("h").setAttribute("transform",`rotate(${(h%12)*30+m/2} 50 50)`);$("mi").setAttribute("transform",`rotate(${m*6+s/10} 50 50)`);$("s").setAttribute("transform",`rotate(${s*6} 50 50)`);
+$("greg").textContent=new Intl.DateTimeFormat("fr-FR",{timeZone:tzo(),dateStyle:"full"}).format(n);
+$("hijri").textContent=new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura",{timeZone:tzo(),dateStyle:"long"}).format(n)}
+function planHtml(){const done=STEPS.filter((s,i)=>prog[i]>=s.n).length;
+return `<section class="card plan"><button class="reset" id="rst">Réinitialiser</button><h2>Plan du jour</h2><small style="color:var(--mute)">${done} étape(s) sur ${STEPS.length} terminée(s). Touchez une étape pour la compter.</small><div class="bar"><i style="width:${done/STEPS.length*100}%"></i></div>
+${STEPS.map((s,i)=>{const d=prog[i]>=s.n;return `<button class="step ${d?"done":""}" data-i="${i}"><span class="n">${d?"✓":i+1}</span><p>${s.t}<small>${i?s.s:"Section "+loc.section+", page "+loc.page} · <span class="count">${prog[i]}/${s.n}</span></small></p></button>`}).join("")}<p style="margin:12px 0 6px"><span aria-hidden="true">⏳</span> <b id="left"></b> restantes aujourd'hui</p><button class="btn" style="width:100%" id="cf">Confirmer la fin du programme</button></section>`}
+function render(){const v=$("view");if(!user){$("nav").innerHTML="";authView(v);return}nav();
+if(tab!=="home"){other(v);return}
+v.innerHTML=(wel?`<section class="card"><b>Assalamou aleykoum wa rahmatou Allahi wa barakatouh${wel?", "+esc(wel):""} !</b><br>${welNew?"Bienvenue ! Votre compte est prêt. Commencez par la première étape du plan du jour.":"Content de vous revoir. Bonne séance de mémorisation."}<br><button class="lk" id="wx">Fermer</button></section>`:"")+`<h1>Accueil</h1>
+<section class="card"><div class="clock">${clockSvg()}<div><select id="tz" aria-label="Fuseau horaire">${ZONES.map(([v,l])=>`<option value="${v}"${v===TZ?" selected":""}>${l}</option>`).join("")}</select><div class="t" id="time"></div><div class="d" id="hijri"></div><small id="greg"></small></div></div>
+<div class="row"><div class="stat"><span>Jours négligés</span><b>${stats.neglected}</b></div><div class="stat"><span>Jours d'exclusion</span><b>${pdays()}</b></div></div>
+<div class="row"><button class="btn" id="st">Statistiques</button><button class="btn" id="ex">Excuses de pause</button></div></section>${planHtml()}`;
+if(wel)$("wx").onclick=()=>{wel=null;render()};$("tz").onchange=e=>{TZ=e.target.value;ss("hifz-tz",TZ);tick()};tick();
+v.querySelectorAll(".step").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;prog[i]=prog[i]>=STEPS[i].n?0:prog[i]+1;save();render()});
+$("cf").onclick=()=>{const d=STEPS.every((s,i)=>prog[i]>=s.n);toast(d?"Programme du jour terminé. Bravo !":"Il reste des étapes à terminer.")};$("rst").onclick=()=>{prog=prog.map(()=>0);save();render()};
+$("st").onclick=()=>{const d=STEPS.filter((s,i)=>prog[i]>=s.n).length;toast(`Aujourd'hui : ${d}/${STEPS.length} étapes terminées.`)};
+$("ex").onclick=()=>{tab="pause";render()}}
+function toast(m){let t=$("toast");if(!t){t=document.createElement("div");t.id="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;t.className="on";clearTimeout(toast.k);toast.k=setTimeout(()=>{t.className=""},2600)}
+const sh=(k,d)=>{try{const x=localStorage.getItem(k);return x==null?d:JSON.parse(x)}catch(e){return d}},ss=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+var cnt=sh("hifz-cnt",0),loc=sh("hifz-loc",{section:"1",page:"1"}),prof=sh("hifz-prof",{name:"",phone:"",email:"",country:"",city:""}),fs="info";
+const isDark=()=>{const t=document.documentElement.dataset.theme;return t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches};
+try{const t=localStorage.getItem("hifz-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
+const MAN=`<svg class="man" viewBox="0 0 240 240" width="230" aria-hidden="true"><defs><radialGradient id="sk" cx=".4" cy=".35" r=".85"><stop offset="0" stop-color="#ffe3bf"/><stop offset="1" stop-color="#f4b988"/></radialGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf6"/><stop offset="1" stop-color="#e9ddc3"/></linearGradient></defs><path d="M64 202C52 212 48 222 50 230" stroke="#5a3a22" stroke-width="28" stroke-linecap="round" fill="none"/><path d="M64 202C52 212 48 222 50 230" stroke="#fbcf9c" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M38 228C38 198 70 180 120 180S202 198 202 228Q202 238 192 238L48 238Q38 238 38 228Z" fill="url(#sh)" stroke="#5a3a22" stroke-width="3.5" stroke-linejoin="round"/><path d="M68 199L58 224" stroke="#5a3a22" stroke-width="32" stroke-linecap="round" fill="none"/><path d="M68 199L58 224" stroke="#f7f0de" stroke-width="26" stroke-linecap="round" fill="none"/><path d="M102 150V182Q120 200 138 182V150Z" fill="#fbcf9c" stroke="#5a3a22" stroke-width="3" stroke-linejoin="round"/><path d="M100 182Q120 202 140 182" stroke="#5a3a22" stroke-width="3" fill="none"/><path d="M120 194V238" stroke="#cbbb98" stroke-width="2.5"/><circle cx="120" cy="206" r="2.8" fill="#efe3c8" stroke="#a89468" stroke-width="1.3"/><circle cx="120" cy="217" r="2.8" fill="#efe3c8" stroke="#a89468" stroke-width="1.3"/><circle cx="120" cy="228" r="2.8" fill="#efe3c8" stroke="#a89468" stroke-width="1.3"/><ellipse cx="120" cy="158" rx="24" ry="9" fill="#e2a370" opacity=".55"/><circle cx="62" cy="106" r="13" fill="url(#sk)" stroke="#5a3a22" stroke-width="3"/><circle cx="178" cy="106" r="13" fill="url(#sk)" stroke="#5a3a22" stroke-width="3"/><path d="M60 102q-4 6 1 11M180 102q4 6-1 11" stroke="#e2a370" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="120" cy="102" rx="58" ry="56" fill="url(#sk)" stroke="#5a3a22" stroke-width="3.5"/><path d="M60 104C46 54 84 20 124 20C170 20 196 58 180 106C176 90 170 78 160 68L148 76L138 58L124 74L110 58L98 76L86 60C72 72 64 88 60 104Z" fill="#4a2f1c" stroke="#5a3a22" stroke-width="3" stroke-linejoin="round"/><path d="M112 26C106 12 122 6 136 14C126 16 122 22 124 30Z" fill="#4a2f1c" stroke="#3a2313" stroke-width="2"/><path d="M92 38C110 30 134 30 152 40" stroke="#7a5230" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/><path d="M80 86Q94 75 110 83M132 83Q148 75 162 86" stroke="#4a2f1c" stroke-width="6.5" stroke-linecap="round" fill="none"/><g class="eye"><ellipse cx="94" cy="98" rx="14" ry="16" fill="#fff" stroke="#5a3a22" stroke-width="2.5"/><circle cx="97" cy="100" r="9" fill="#7b4a2a"/><circle cx="97" cy="100" r="9" fill="none" stroke="#4a2c17" stroke-width="1.5"/><circle cx="97" cy="101" r="4.6" fill="#1a1a2e"/><circle cx="94" cy="95" r="3.2" fill="#fff"/><circle cx="100" cy="104" r="1.5" fill="#fff"/></g><g class="eye"><ellipse cx="146" cy="98" rx="14" ry="16" fill="#fff" stroke="#5a3a22" stroke-width="2.5"/><circle cx="149" cy="100" r="9" fill="#7b4a2a"/><circle cx="149" cy="100" r="9" fill="none" stroke="#4a2c17" stroke-width="1.5"/><circle cx="149" cy="101" r="4.6" fill="#1a1a2e"/><circle cx="146" cy="95" r="3.2" fill="#fff"/><circle cx="152" cy="104" r="1.5" fill="#fff"/></g><ellipse cx="78" cy="122" rx="11" ry="6.5" fill="#ff8f80" opacity=".5"/><ellipse cx="162" cy="122" rx="11" ry="6.5" fill="#ff8f80" opacity=".5"/><path d="M117 113q3 6 9 1" stroke="#d08f5f" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M86 128Q120 178 154 128Q120 138 86 128Z" fill="#7a2a24" stroke="#5a3a22" stroke-width="3" stroke-linejoin="round"/><path d="M91 130Q120 141 149 130L146 137Q120 147 94 137Z" fill="#fff"/><path d="M104 150Q120 141 136 150Q120 160 104 150Z" fill="#ec6a62"/><g class="arm"><path d="M186 184L208 136" stroke="#5a3a22" stroke-width="27" stroke-linecap="round" fill="none"/><path d="M186 184L208 136" stroke="#fbcf9c" stroke-width="21" stroke-linecap="round" fill="none"/><path d="M177 200L197 164" stroke="#5a3a22" stroke-width="33" stroke-linecap="round" fill="none"/><path d="M177 200L197 164" stroke="#f7f0de" stroke-width="27" stroke-linecap="round" fill="none"/><g class="hand"><path d="M199 112V94M207 110V88M215 111V90M222 115V98" stroke="#5a3a22" stroke-width="11" stroke-linecap="round"/><path d="M196 126L187 114" stroke="#5a3a22" stroke-width="11" stroke-linecap="round"/><ellipse cx="209" cy="122" rx="15" ry="16" fill="#fbcf9c" stroke="#5a3a22" stroke-width="3"/><path d="M199 112V94M207 110V88M215 111V90M222 115V98" stroke="#fbcf9c" stroke-width="6" stroke-linecap="round"/><path d="M196 126L187 114" stroke="#fbcf9c" stroke-width="6" stroke-linecap="round"/><ellipse cx="209" cy="122" rx="12.5" ry="13.5" fill="#fbcf9c"/></g></g></svg>`;
+function bigMsg(h,g){const o=document.createElement("div");o.className="bye";o.setAttribute("role","status");o.innerHTML=`<div class="bx ${g||""}">${MAN}<p>${h}</p></div>`;document.body.appendChild(o);setTimeout(()=>o.classList.add("out"),2300);setTimeout(()=>o.remove(),2800)}
+const byeAnim=()=>bigMsg("À la prochaine,<br>incha Allah","gb");
+function sheet(){const d=document.createElement("div");d.className="sh";d.innerHTML=`<div class="pn" role="dialog" aria-label="Menu"><button class="btn" data-a="th">${isDark()?"Passer en mode clair":"Passer en mode sombre"}</button><button class="btn" data-a="fq">FAQ</button><button class="btn" data-a="lo">Se déconnecter</button><button class="btn" data-a="x">Fermer</button></div>`;
+d.onclick=e=>{const a=e.target.dataset.a;if(a==="th"){const t=isDark()?"light":"dark";document.documentElement.dataset.theme=t;try{localStorage.setItem("hifz-theme",t)}catch(x){}}
+if(a==="fq")tab="faq";if(a==="lo"){bye=true;byeAnim();user=null;ss("hifz-user",null);au="login"}if(a||e.target===d){d.remove();render()}};document.body.appendChild(d)}
+function other(v){if(tab==="pause"||tab==="pform")return pauseView(v);
+if(tab==="cnt"){v.innerHTML=`<h1>Compteur de répétitions</h1><div class="ctr"><button class="big" id="c1" aria-label="Ajouter une répétition">${cnt}</button><div><button class="btn rd" id="mn" aria-label="Retirer">−</button><button class="btn rd" id="c2" aria-label="Ajouter">+</button></div><button class="btn" id="rz">Réinitialiser</button></div>`;
+const set=n=>{cnt=Math.max(0,n);ss("hifz-cnt",cnt);render()};$("c1").onclick=$("c2").onclick=()=>set(cnt+1);$("mn").onclick=()=>set(cnt-1);$("rz").onclick=()=>set(0)}
+else if(tab==="val"){v.innerHTML=`<h1>Changer la section</h1><section class="card"><label>Section<input id="sc" type="number" min="1" value="${loc.section}"></label><label>Page<input id="pg" type="number" min="1" value="${loc.page}"></label></section><div style="text-align:center"><button class="btn" id="up">Mettre à jour</button></div>`;
+$("up").onclick=()=>{loc={section:$("sc").value||"1",page:$("pg").value||"1"};ss("hifz-loc",loc);prog=prog.map(()=>0);save();tab="home";render()}}
+else if(tab==="file"){const F=[["name","Nom d'utilisateur"],["phone","Téléphone"],["email","Adresse e-mail"],["country","Pays"],["city","Ville"]];
+v.innerHTML=`<h1>Dossier personnel</h1><div class="tabs">${[["info","Informations"],["pw","Mot de passe"],["mail","E-mail"]].map(([k,l])=>`<button data-f="${k}" aria-pressed="${k===fs}">${l}</button>`).join("")}</div><section class="card">${fs==="info"?F.map(([k,l])=>`<label>${l}<input data-p="${k}" value="${prof[k]||""}"></label>`).join("")+'<button class="btn" id="go">Mettre à jour</button>':fs==="pw"?["Ancien mot de passe","Nouveau mot de passe","Confirmer le nouveau mot de passe"].map(l=>`<label>${l}<input type="password" autocomplete="off"></label>`).join("")+'<button class="btn" id="go">Enregistrer</button>':'<label>Adresse e-mail<input type="email" id="em"></label><button class="btn" id="go">Recevoir le code de vérification</button>'}<p class="msg" id="mg"></p></section>`;
+v.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{fs=b.dataset.f;render()});
+$("go").onclick=()=>{if(fs==="info"){v.querySelectorAll("[data-p]").forEach(i=>prof[i.dataset.p]=i.value);ss("hifz-prof",prof);$("mg").textContent="Informations enregistrées sur cet appareil."}else $("mg").textContent="Il faut un serveur de comptes pour cette action : elle n'est pas encore branchée."}}
+else if(tab==="faq"){v.innerHTML=`<h1>FAQ</h1>`+[["Comment fonctionne le plan du jour ?","Chaque jour, touchez une étape pour compter une répétition. Elle se valide quand le nombre demandé est atteint."],["Comment changer de section ?","Ouvrez « Valeur », saisissez la section et la page, puis mettez à jour. Le plan du jour repart de zéro."],["Où sont mes données ?","Sur cet appareil uniquement, dans le navigateur."]].map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join("")}}
+setInterval(()=>{const e=$("left");if(e){const q=new Intl.DateTimeFormat("fr-FR",{timeZone:tzo(),hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}).formatToParts(new Date()).reduce((o,y)=>(o[y.type]=+y.value,o),{});const x=Math.max(0,82800-((q.hour%24)*3600+q.minute*60+q.second)),p=v=>String(v).padStart(2,"0");e.textContent=`${p(x/3600|0)}:${p(x%3600/60|0)}:${p(x%60)}`}},1000);
+var accts=sh("hifz-accts",[]),user=sh("hifz-user",null),au="welcome";
+const hs=async t=>{try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return btoa(unescape(encodeURIComponent(t)))}};
+function enter(a,nw){wel=(a.name||"").split(" ")[0];welNew=!!nw;bye=false;bigMsg("Assalamou aleykoum<br>wa rahmatou Allahi<br>wa barakatouh"+(wel?"<br>"+esc(wel):""));user=a.email;ss("hifz-user",user);prof={...prof,name:a.name,phone:a.phone,email:a.email};ss("hifz-prof",prof);tab="home";render()}
+var pend=null,wel=null,welNew=false,bye=false;
+const gen=()=>String(crypto.getRandomValues(new Uint32Array(1))[0]%900000+100000);
+function verifyView(v){v.innerHTML=`<div class="au"><h1>Vérifiez votre e-mail</h1><p>Saisissez le code à 6 chiffres destiné à <b>${esc(pend.a.email)}</b>.</p><div class="card" role="note"><b>Mode démonstration</b><br><small>Cette page ne peut pas envoyer d'e-mail. Votre code :</small><br><b style="font-size:1.5rem;letter-spacing:.15em">${pend.code}</b></div><label>Code de vérification<input id="vc" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></label><button class="btn pr" id="ok">Valider</button><button class="lk" id="rs">Renvoyer un code</button><button class="lk" id="ch">Modifier l'e-mail</button></div>`;
+$("rs").onclick=()=>{pend.code=gen();pend.exp=Date.now()+6e5;render();toast("Nouveau code généré.")};$("ch").onclick=()=>{au="reg";render()};
+$("ok").onclick=()=>{if(Date.now()>pend.exp)return toast("Code expiré. Demandez-en un nouveau.");if($("vc").value.trim()!==pend.code)return toast("Code incorrect.");const a=pend.a;pend=null;accts.push(a);ss("hifz-accts",accts);enter(a,true)}}
+function authView(v){if(au==="verify"&&pend)return verifyView(v);const O=a=>a.map(x=>`<option>${x}</option>`).join("");
+if(au==="welcome"){v.innerHTML=`<div class="au"><h1 class="lg">Hifz</h1><p class="ph" style="margin:0 0 20px">Mémorisez le Coran par la répétition, avec un plan clair chaque jour.</p><button class="btn pr" id="a1">Créer un compte</button><button class="btn" id="a2">Se connecter</button></div>`;
+$("a1").onclick=()=>{au="reg";render()};$("a2").onclick=()=>{au="login";render()}}
+else if(au==="login"){v.innerHTML=`<div class="au"><h1>Connexion</h1>${bye?'<p class="msg">À la prochaine, incha Allah.</p>':""}<label>Nom d'utilisateur ou e-mail<input id="li" autocomplete="username"></label><label>Mot de passe<input id="lp" type="password" autocomplete="current-password"></label><button class="lk" id="sp" type="button">Afficher le mot de passe</button><button class="btn pr" id="ok">Se connecter</button><button class="lk" id="gr">Pas de compte ? Créer un compte</button></div>`;
+$("sp").onclick=()=>{const i=$("lp");i.type=i.type==="password"?"text":"password"};$("gr").onclick=()=>{au="reg";render()};
+$("ok").onclick=async()=>{const q=$("li").value.trim().toLowerCase(),a=accts.find(x=>x.email===q||x.name.toLowerCase()===q);if(!a||a.h!==await hs(a.email+":"+$("lp").value))return toast("Identifiants incorrects.");enter(a)}}
+else{v.innerHTML=`<div class="au"><h1>Créer un compte</h1><label>Nom complet<input id="rn" autocomplete="name"></label><label>Internet disponible chez vous ?<select id="ri">${O(["Oui","Non","Parfois"])}</select></label><label>Téléphone<div class="ph2"><select id="rc">${O(["+216","+213","+212","+966","+33","+1"])}</select><input id="rt" type="tel"></div></label><label>Genre<select id="rg">${O(["Homme","Femme"])}</select></label><label>Parcours<select id="rk">${O(["Nouvelle mémorisation","Consolidation de l'acquis"])}</select></label><label>Adresse e-mail<input id="re" type="email" autocomplete="email"></label><label>Mot de passe (8 caractères minimum)<input id="rp" type="password" autocomplete="new-password"></label><label>Confirmer le mot de passe<input id="rq" type="password" autocomplete="new-password"></label><button class="btn pr" id="ok">Créer mon compte</button><button class="lk" id="gl">Déjà un compte ? Se connecter</button></div>`;
+$("gl").onclick=()=>{au="login";render()};
+$("ok").onclick=async()=>{const n=$("rn").value.trim(),t=$("rt").value.trim(),e=$("re").value.trim().toLowerCase(),p=$("rp").value;
+if(!n||!t||!e||!p)return toast("Remplissez tous les champs.");if(!/^\S+@\S+\.\S+$/.test(e))return toast("Adresse e-mail invalide.");if(p.length<8)return toast("Mot de passe trop court.");if(p!==$("rq").value)return toast("Les mots de passe diffèrent.");if(accts.some(x=>x.email===e))return toast("Cette adresse a déjà un compte.");
+const a={name:n,internet:$("ri").value,phone:$("rc").value+" "+t,gender:$("rg").value,track:$("rk").value,email:e,h:await hs(e+":"+p)};pend={a,code:gen(),exp:Date.now()+6e5};au="verify";render()}}}
+var TZ=sh("hifz-tz","Africa/Tunis");
+const ZONES=[["Africa/Tunis","Tunisie"],["Africa/Algiers","Algérie"],["Africa/Casablanca","Maroc"],["Africa/Cairo","Égypte"],["Asia/Riyadh","La Mecque (Arabie saoudite)"],["Asia/Dubai","Dubaï"],["Europe/Paris","France"],["Europe/London","Londres"],["Europe/Istanbul","Turquie"],["America/Montreal","Montréal"],["America/New_York","New York"],["","Heure de mon appareil"]];
+const tzo=()=>TZ||undefined;
+try{new Intl.DateTimeFormat("fr-FR",{timeZone:tzo()})}catch(e){TZ="Africa/Tunis"}
+var pauses=sh("hifz-pauses",[]);
+const pdays=()=>pauses.reduce((a,x)=>a+x.d,0),CAUSES=["Maladie","Voyage","Examens","Obligation familiale","Autre"];
+const esc=t=>t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])),fd=x=>new Date(x+"T00:00").toLocaleDateString("fr-FR");
+const hdr=(t,e)=>`<div class="hd"><button class="ic" id="bk" aria-label="Retour">←</button><h1>${t}</h1>${e||""}</div>`;
+function pauseView(v){
+if(tab==="pause"){v.innerHTML=hdr("Excuses et jours de pause",'<button class="ic" id="rf" aria-label="Actualiser">↻</button><button class="ic" id="ad" aria-label="Ajouter une excuse">+</button>')+(pauses.length?pauses.map((x,i)=>`<div class="card"><b>${x.c}</b><br><small>Du ${fd(x.f)} au ${fd(x.t)} · ${x.d} jour(s)</small>${x.n?`<p>${esc(x.n)}</p>`:""}<button class="btn" data-x="${i}">Supprimer</button></div>`).join(""):'<p class="ph">Aucune information</p>');
+$("bk").onclick=()=>{tab="home";render()};$("rf").onclick=()=>{pauses=sh("hifz-pauses",[]);render()};$("ad").onclick=()=>{tab="pform";render()};
+v.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{pauses.splice(+b.dataset.x,1);ss("hifz-pauses",pauses);render()})}
+else{v.innerHTML=hdr("Nouvelle excuse de pause")+`<section class="card"><label>Cause de l'arrêt<select id="pc">${CAUSES.map(c=>`<option>${c}</option>`).join("")}</select></label><label>À partir du<input type="date" id="pf"></label><label>Jusqu'au<input type="date" id="pt"></label><label>Détails (facultatif)<input id="pn" maxlength="200"></label><button class="btn" id="sv" style="width:100%">Sauvegarder</button></section>`;
+$("bk").onclick=()=>{tab="pause";render()};
+$("sv").onclick=()=>{const f=$("pf").value,t=$("pt").value;if(!f||!t)return toast("Choisissez les deux dates.");const d=Math.round((new Date(t)-new Date(f))/864e5)+1;if(d<1)return toast("La date de fin doit suivre la date de début.");
+pauses.push({c:$("pc").value,f,t,d,n:$("pn").value.trim()});ss("hifz-pauses",pauses);tab="pause";render()}}}
+setInterval(tick,1000);render();
+</script>
+</body>
+</html>
